@@ -30,6 +30,7 @@ const App: React.FC = () => {
     setAppState(AppState.ANALYZING);
     setError(null);
     
+    // Read the file as base64
     const reader = new FileReader();
     reader.onloadend = async () => {
       try {
@@ -113,10 +114,10 @@ const App: React.FC = () => {
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex items-center gap-3">
           <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-2 rounded-lg shadow-lg">
-             <Newspaper className="w-6 h-6 text-white" />
+              <Newspaper className="w-6 h-6 text-white" />
           </div>
           <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">
-            PoliticoScan AI
+            PoliSense AI
           </h1>
         </div>
       </header>
@@ -156,26 +157,26 @@ const App: React.FC = () => {
 
         {/* State: Error */}
         {appState === AppState.ERROR && (
-           <div className="mt-20 p-8 bg-white rounded-xl shadow-lg border border-red-200 max-w-md text-center">
-             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-               <span className="text-2xl">⚠️</span>
-             </div>
-             <h3 className="text-xl font-bold text-gray-900 mb-2">Analysis Failed</h3>
-             <p className="text-gray-600 mb-6">{error}</p>
-             <button 
+          <div className="mt-20 p-8 bg-white rounded-xl shadow-lg border border-red-200 max-w-md text-center">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-2xl">⚠️</span>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Analysis Failed</h3>
+            <p className="text-gray-600 mb-6">{error}</p>
+            <button 
                 onClick={() => setAppState(AppState.UPLOAD)} // Go back to review/upload state
                 className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
-             >
+            >
                 Try Again
-             </button>
-           </div>
+            </button>
+          </div>
         )}
       </main>
 
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 py-6">
         <div className="max-w-7xl mx-auto px-6 text-center text-gray-500 text-sm">
-          &copy; {new Date().getFullYear()} PoliSense AI for NLP Project. Summarisation powered by Google Gemini 2.5.
+          &copy; {new Date().getFullYear()} PoliSense AI for NLP Project. Analysis using our fine-tuned models, summarisation powered by Google Gemini 2.5.
         </div>
       </footer>
     </div>

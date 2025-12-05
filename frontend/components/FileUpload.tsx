@@ -103,7 +103,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
             </div>
           </div>
           <div className="bg-gray-50 px-6 py-4 border-t border-gray-100 flex items-center justify-center text-sm text-gray-500">
-             Ready for analysis using Gemini 2.5 Flash
+              Ready for analysis using advanced AI algorithms.
           </div>
         </div>
       </div>

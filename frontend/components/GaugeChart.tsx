@@ -10,9 +10,9 @@ interface GaugeChartProps {
 
 const GaugeChart: React.FC<GaugeChartProps> = ({ score, label, percentage, direction }) => {
   // Normalize score (-100 to 100) to angle (180 to 0)
-  // -100 (Left) = 180 deg
+  // -100 (Left) = 0 deg
   // 0 (Center) = 90 deg
-  // 100 (Right) = 0 deg
+  // 100 (Right) = 180 deg
   
   // Map input score to 0-100 range for the gauge needle position
   const normalizedScore = (score + 100) / 2; // 0 to 100
@@ -22,13 +22,33 @@ const GaugeChart: React.FC<GaugeChartProps> = ({ score, label, percentage, direc
   // Here we will use a single slice with a gradient fill.
   const data = [{ name: 'Range', value: 100 }];
   
-  const needleRotation = 180 - (normalizedScore / 100) * 180;
+  const needleRotation = (normalizedScore / 100) * 180;
 
   return (
     <div className="relative w-full h-64 flex flex-col items-center justify-center">
-      <h3 className="text-gray-500 text-sm font-semibold mb-2 absolute top-2 left-10">Left</h3>
-      <h3 className="text-gray-500 text-sm font-semibold mb-2 absolute top-2 right-10">Right</h3>
-      <h3 className="text-gray-400 text-xs font-medium mb-2 absolute top-2 left-1/2 transform -translate-x-1/2">Center</h3>
+      {/* <h3 className="text-gray-500 text-sm font-semibold mb-2 absolute top-2">
+        Left
+      </h3>
+      <h3 className="text-gray-500 text-sm font-semibold mb-2 absolute top-2 right-10">
+        Right
+      </h3>
+      <h3 className="text-gray-400 text-xs font-medium mb-2 absolute top-2 left-1/2 transform -translate-x-1/2">
+        Center
+      </h3> */}
+        {/* Left */}
+      <h3 className="absolute top-2 left-4 text-gray-500 text-sm font-semibold">
+        Left
+      </h3>
+
+      {/* Center */}
+      <h3 className="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 text-xs font-medium">
+        Center
+      </h3>
+
+      {/* Right */}
+      <h3 className="absolute top-2 right-4 text-gray-500 text-sm font-semibold">
+        Right
+      </h3>
 
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
@@ -66,28 +86,28 @@ const GaugeChart: React.FC<GaugeChartProps> = ({ score, label, percentage, direc
         // Let's refine the transform logic below purely with CSS styles.
       >
          {/* Using an SVG for a nice needle look */}
-         <svg width="100%" height="100%" viewBox="0 0 20 100" preserveAspectRatio="none">
-           <path d="M10 0 L20 100 L10 90 L0 100 Z" fill="#374151" />
-           <circle cx="10" cy="90" r="5" fill="#374151" />
-         </svg>
+        <svg width="100%" height="100%" viewBox="0 0 20 100" preserveAspectRatio="none">
+            <path d="M10 0 L20 100 L10 90 L0 100 Z" fill="#374151" />
+            <circle cx="10" cy="90" r="5" fill="#374151" />
+        </svg>
       </div>
       
       {/* Needle Overlay Logic specific to React/CSS rotation */}
-       <div 
+      <div 
         className="absolute w-full h-full pointer-events-none flex justify-center items-end pb-[30%]"
       >
          {/* This container sits on top. We can rotate an inner element. */}
-         <div 
+        {/* <div 
             className="w-1 h-32 bg-slate-700 origin-bottom rounded-full transition-all duration-1000"
             style={{ 
                 transform: `rotate(${ (normalizedScore * 1.8) - 90 }deg)` // 0 score -> -90deg (Left), 50 score -> 0deg (Up), 100 score -> 90deg (Right)
             }}
-         ></div>
+        ></div> */}
          {/* Center pivot */}
-         <div className="absolute w-4 h-4 bg-slate-800 rounded-full bottom-[29%]"></div>
+        <div className="absolute w-4 h-4 bg-slate-800 rounded-full bottom-[29%]"></div>
       </div>
 
-      <div className="absolute bottom-0 text-center">
+      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-center">
         <h2 className="text-xl font-bold text-gray-800">Tier: {label}</h2>
         <p className="text-lg text-gray-600 mt-1">
           {percentage}% {direction}-Leaning
