@@ -24,7 +24,7 @@ const App: React.FC = () => {
     setError(null);
   };
 
-  const triggerAnalysis = async () => {
+    const triggerAnalysis = async () => {
     if (!selectedFile) return;
 
     setAppState(AppState.ANALYZING);
@@ -36,11 +36,8 @@ const App: React.FC = () => {
         const base64String = (reader.result as string).split(',')[1];
         setPdfBase64(base64String); // Store for ChatInterface
 
-        // Parallel execution: Backend for Bias/Leaning, Gemini for Metadata/Summary
-        const [backendResult, geminiResult] = await Promise.all([
-          uploadAndAnalyzeFile(selectedFile),
-          analyzePdfMetadataAndSummary(base64String)
-        ]);
+        // Step 1: Run Backend Analysis (Leaning & Bias)
+        const backendResult = await uploadAndAnalyzeFile(selectedFile);
 
         // Process Backend Results
         const { leaning, bias } = backendResult;
@@ -69,6 +66,14 @@ const App: React.FC = () => {
           impactScore: s.confidence_score * 10, // Scale 0-1 to 0-10
           reasoning: `Model confidence: ${(s.confidence_score * 100).toFixed(1)}%`
         }));
+
+        // Step 2: Run Gemini Analysis (Metadata & Summary/Explanation)
+        // Pass the backend results to Gemini so it can explain them
+        const geminiResult = await analyzePdfMetadataAndSummary(base64String, {
+            politicalLabel,
+            politicalScore,
+            topSentences: topSentences.map(s => s.text)
+        });
 
         // Construct Final Result
         const finalResult: AnalysisResult = {
@@ -170,7 +175,7 @@ const App: React.FC = () => {
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 py-6">
         <div className="max-w-7xl mx-auto px-6 text-center text-gray-500 text-sm">
-          &copy; {new Date().getFullYear()} PoliSense AI for NLP Project. Powered by Google Gemini 2.5.
+          &copy; {new Date().getFullYear()} PoliSense AI for NLP Project. Summarisation powered by Google Gemini 2.5.
         </div>
       </footer>
     </div>

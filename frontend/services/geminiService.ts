@@ -3,13 +3,25 @@ import { AnalysisResult } from "../types";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-export const analyzePdfMetadataAndSummary = async (base64Pdf: string): Promise<Partial<AnalysisResult>> => {
+export const analyzePdfMetadataAndSummary = async (
+  base64Pdf: string,
+  backendResults: {
+    politicalLabel: string;
+    politicalScore: number;
+    topSentences: string[];
+  }
+): Promise<Partial<AnalysisResult>> => {
   const modelId = "gemini-2.5-flash";
 
   const systemInstruction = `
     You are PoliSense, an expert political analyst AI.
-    Your task is to analyze the provided PDF text and extract key metadata and a summary.
-    
+    Your task is to analyze the provided PDF text and the results from a separate bias detection model to generate a layman-friendly explanation.
+
+    **Input Data**:
+    - **Political Leaning**: ${backendResults.politicalLabel} (Score: ${backendResults.politicalScore})
+    - **Top Biased Sentences Detected**:
+      ${backendResults.topSentences.map((s, i) => `${i + 1}. "${s}"`).join("\n      ")}
+
     1. **Metadata Extraction**:
        - Extract the **Article Title**.
        - Identify the **News Outlet** or Source.
@@ -17,9 +29,11 @@ export const analyzePdfMetadataAndSummary = async (base64Pdf: string): Promise<P
        - Count the **Word Count** (approximate).
        - Estimate the **Read Time**.
 
-    2. **Summary**:
-       - Provide a concise summary (max 100 words) of the article's content and rhetorical framing.
-       - Do NOT provide political scores or bias labels; these will be provided by another system.
+    2. **Explanation & Summary**:
+       - Provide a concise summary (max 150 words) of the article's content.
+       - **Crucially**, explain *why* the article was classified as **${backendResults.politicalLabel}**.
+       - Use the provided **Top Biased Sentences** as evidence to explain the rhetorical framing and bias to a general audience.
+       - Explain the bias in simple, understandable terms (e.g., "The article uses loaded language like...which might contribute to the ${backendResults.politicalLabel} leaning").
   `;
 
   try {
@@ -34,7 +48,7 @@ export const analyzePdfMetadataAndSummary = async (base64Pdf: string): Promise<P
             },
           },
           {
-            text: "Extract metadata and summary for this article.",
+            text: "Extract metadata and explain the political leaning and bias of this article using the provided analysis results.",
           },
         ],
       },
@@ -55,7 +69,7 @@ export const analyzePdfMetadataAndSummary = async (base64Pdf: string): Promise<P
               },
               required: ["title", "outlet", "publishedDate", "wordCount", "readTime"],
             },
-            summary: { type: Type.STRING, description: "Rhetorical analysis summary" },
+            summary: { type: Type.STRING, description: "Layman-friendly explanation of the bias and summary of content" },
           },
           required: ["metadata", "summary"],
         },
