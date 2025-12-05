@@ -30,3 +30,23 @@ export enum AppState {
   RESULTS = 'RESULTS',
   ERROR = 'ERROR'
 }
+
+export interface BackendLeaning {
+  predicted_class_id: number; // 0=Left, 1=Center, 2=Right
+  probabilities: number[];
+}
+
+export interface BackendBiasItem {
+  sentence: string;
+  predicted_class_id: number;
+  confidence_score: number;
+}
+
+export interface BackendBias {
+  top_biased_sentences: BackendBiasItem[];
+}
+
+export interface BackendAnalysisResponse {
+  leaning: BackendLeaning;
+  bias: BackendBias;
+}

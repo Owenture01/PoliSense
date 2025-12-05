@@ -26,7 +26,7 @@ const GaugeChart: React.FC<GaugeChartProps> = ({ score, label, percentage, direc
 
   return (
     <div className="relative w-full h-64 flex flex-col items-center justify-center">
-      <h3 className="text-gray-500 text-sm font-semibold mb-2 absolute top-2">Left</h3>
+      <h3 className="text-gray-500 text-sm font-semibold mb-2 absolute top-2 left-10">Left</h3>
       <h3 className="text-gray-500 text-sm font-semibold mb-2 absolute top-2 right-10">Right</h3>
       <h3 className="text-gray-400 text-xs font-medium mb-2 absolute top-2 left-1/2 transform -translate-x-1/2">Center</h3>
 
@@ -87,7 +87,7 @@ const GaugeChart: React.FC<GaugeChartProps> = ({ score, label, percentage, direc
          <div className="absolute w-4 h-4 bg-slate-800 rounded-full bottom-[29%]"></div>
       </div>
 
-      <div className="absolute bottom-10 text-center">
+      <div className="absolute bottom-0 text-center">
         <h2 className="text-xl font-bold text-gray-800">Tier: {label}</h2>
         <p className="text-lg text-gray-600 mt-1">
           {percentage}% {direction}-Leaning

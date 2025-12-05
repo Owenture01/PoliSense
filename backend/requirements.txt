@@ -1,0 +1,9 @@
+docx==0.2.4
+fastapi==0.123.9
+pydantic_settings==2.12.0
+pypdf==6.4.0
+python_docx==1.2.0
+torch==2.9.1
+transformers==4.57.1
+uvicorn==0.38.0
+python-multipart
