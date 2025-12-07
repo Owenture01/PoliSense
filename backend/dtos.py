@@ -19,4 +19,5 @@ class BiasItemDto(BaseModel):
 
 
 class BiasEvaluationDto(BaseModel):
+    percentage_biased: float
     top_biased_sentences: list[BiasItemDto]

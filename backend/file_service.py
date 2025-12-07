@@ -160,8 +160,10 @@ class FileService:
 
         # Filter for class 1 (biased), sort by confidence score descending and take top 5
         biased_only = [item for item in bias_items if item.predicted_class_id == 1]
+        # percentage of biased sentences
+        percentage_biased = round(len(biased_only) / len(bias_items) * 100, 2)
         top_biased = sorted(
             biased_only, key=lambda x: x.confidence_score, reverse=True
         )[:5]
 
-        return BiasEvaluationDto(top_biased_sentences=top_biased)
+        return BiasEvaluationDto(top_biased_sentences=top_biased, percentage_biased=percentage_biased)
