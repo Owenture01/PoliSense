@@ -2,7 +2,7 @@
 
 PoliSense AI is a full-stack application designed to analyze news articles for political leaning, bias, and rhetorical framing. It leverages advanced Natural Language Processing (NLP) models and Google's Gemini AI to provide users with a comprehensive understanding of the media they consume.
 
-<img width="456" height="514" alt="image" src="https://github.com/user-attachments/assets/775350b6-684e-4208-9ca9-8278073ac6c2" />
+<img width="2706" height="3053" alt="image" src="https://github.com/user-attachments/assets/fc9c47ed-ecd5-4b2e-a09f-eb8a264f5f28" />
 
 
 
